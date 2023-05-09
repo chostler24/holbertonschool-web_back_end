@@ -15,12 +15,8 @@ async def measure_runtime() -> float:
     """measure_runtime function declaration"""
     start = asyncio.get_running_loop().time()
 
-    await asyncio.gather(
-        async_comprehension(),
-        async_comprehension(),
-        async_comprehension(),
-        async_comprehension()
-    )
+    coroutines: List = [async_comprehension() for _ in range(4)]
+    await asyncio.gather(*coroutines)
 
     end = asyncio.get_running_loop().time()
 
