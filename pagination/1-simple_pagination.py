@@ -17,7 +17,6 @@ def index_range(page, page_size):
     return index_start, index_end
 
 
-
 class Server:
     """Server class to paginate a database of popular baby names.
     """
