@@ -66,7 +66,7 @@ class Server:
             'data': dataset_page,
             'next_page': next_page,
             'prev_page': prev_page,
-            'total_pages':total_pages
+            'total_pages': total_pages
         }
 
         return hyperdata
