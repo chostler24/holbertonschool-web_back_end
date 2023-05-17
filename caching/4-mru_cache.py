@@ -23,17 +23,15 @@ class MRUCache(BaseCaching):
             self.queue.remove(key)
         self.queue.append(key)
 
-        if len(self.queue) > self.MAX_ITEMS:
+        if len(self.cache_data) >= self.MAX_ITEMS:
             recent_key = self.queue.pop()
             del self.cache_data[recent_key]
             print("DISCARD: {}".format(recent_key))
 
     def get(self, key):
         """Get method returns value in dict linked to key"""
-        if key is None or key not in self.cache_data:
-            return None
-
-        self.queue.remove(key)
-        self.queue.append(key)
-
-        return self.cache_data[key]
+        if key in self.cache_data:
+            self.queue.remove(key)
+            self.queue.append(key)
+            return self.cache_data[key]
+        return None
