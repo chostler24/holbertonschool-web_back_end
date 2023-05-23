@@ -5,6 +5,8 @@ Write a function called filter_datum that returns the log message obfuscated
 import logging
 import re
 from typing import List
+from os import environ
+import mysql.connector
 
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -53,6 +55,7 @@ def get_logger() -> logging.Logger:
     with RedactingFormatter as formatter
     PII_FIELDS: tuple constant at root of module with fields from csv file,
     only contains 5 fields that are considered important PII
+    returns a logging.Logger object
     """
     user_data = logging.getLogger("user_data")
     user_data.setLevel(logging.INFO)
@@ -63,3 +66,19 @@ def get_logger() -> logging.Logger:
 
     user_data.addHandler(stream)
     return user_data
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """
+    Connects to a database protected by username and password
+    that are set as environmental variables
+    Returns a connector to the database
+    """
+    db = mysql.connector.connect(
+        user = environ.get("PERSONAL_DATA_DB_USERNAME"),
+        password = environ.get("PERSONAL_DATA_DB_PASSWORD"),
+        host = environ.get("PERSONAL_DATA_DB_HOST"),
+        database = environ.get("PERSONAL_DATA_DB_NAME")
+    )
+
+    return db
