@@ -7,6 +7,9 @@ import re
 from typing import List
 
 
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+
+
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
         """
@@ -42,3 +45,21 @@ def filter_datum(fields: List[str], redaction: str, message: str,
         regexStr = f"(?<={field}=).*?(?={separator})"
         message = re.sub(regexStr, redaction, message)
     return message
+
+
+def get_logger() -> logging.Logger:
+    """
+    user_data: logs up to logging.INFO level, has a StreamHandler
+    with RedactingFormatter as formatter
+    PII_FIELDS: tuple constant at root of module with fields from csv file,
+    only contains 5 fields that are considered important PII
+    """
+    user_data = logging.getLogger("user_data")
+    user_data.setLevel(logging.INFO)
+    user_data.propagate = False
+
+    stream = logging.StreamHandler()
+    stream.setFormatter(RedactingFormatter(PII_FIELDS))
+
+    user_data.addHandler(stream)
+    return user_data
