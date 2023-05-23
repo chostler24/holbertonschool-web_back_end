@@ -82,3 +82,28 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     )
 
     return db
+
+
+def main():
+    """
+    Obtains database connection using get_db and retrieves all
+    rows in users table and displays each row under filtered
+    format
+    Only main function should run when module is executed
+    """
+    log = get_logger()
+    db = get_db()
+
+    query_execute = db.cursor(dictionary=True)
+    query_execute.execute("SELECT * FROM users")
+
+    for row in query_execute:
+        tuples = row.items()
+        string = "; ".join(f"{tuple[0]}={tuple[1]}" for tuple in tuples)
+        log.info(string)
+
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
