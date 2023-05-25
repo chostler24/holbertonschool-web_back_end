@@ -23,6 +23,7 @@ if os.environ.get("AUTH_TYPE"):
 
 @app.before_request
 def before_request():
+    """function before_request checks auth"""
     if auth is None:
         return
 
