@@ -24,16 +24,16 @@ if os.environ.get("AUTH_TYPE"):
 @app.before_request
 def before_request():
     """function before_request checks auth"""
-    if auth is None:
-        return
+    authList = ["/api/v1/status/",
+                "/api/v1/unauthorized",
+                "/api/v1/forbidden"]
 
-    allowed_paths = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
-    if request.path not in allowed_paths:
-        auth_result = auth.require_auth(request)
-        if auth_result is None:
+    if auth and auth.require_auth(request.path, authList):
+
+        if auth.authorization_header(request) is None:
             abort(401)
-        current_user = auth.current_user(request)
-        if current_user is None:
+
+        if auth.current_user(request) is None:
             abort(403)
 
 
