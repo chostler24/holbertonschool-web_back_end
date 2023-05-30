@@ -40,16 +40,9 @@ class SessionAuth(Auth):
             or None if the cookie or user is not found.
 
         """
-        if request is None:
-            return None
-
-        session_id = self.session_cookie(request)
-        if session_id is None:
-            return None
-
-        user_id = self.user_id_for_session_id(session_id)
-        if user_id is None:
-            return None
-
-        user = User.get(user_id)
-        return user
+        cookie_value = self.session_cookie(request)
+        if cookie_value:
+            user_id = self.user_id_for_session_id(cookie_value)
+            if user_id:
+                return User.get(user_id)
+        return None
