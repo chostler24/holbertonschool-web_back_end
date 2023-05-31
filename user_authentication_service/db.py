@@ -33,6 +33,12 @@ class DB:
         """Add a new user to the database
         """
         user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
+        try:
+            existing_user = self._session.query(User).filter_by(email=email).one()
+            existing_user.hashed_password = hashed_password
+            user = self._session.merge(existing_user)
+        except NoResultFound:
+            self._session.add(user)
+
         self._session.commit()
         return user
