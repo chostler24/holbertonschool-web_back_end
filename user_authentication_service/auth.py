@@ -3,6 +3,7 @@
 from bcrypt import hashpw, gensalt, checkpw
 from db import DB
 from user import User
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class Auth:
