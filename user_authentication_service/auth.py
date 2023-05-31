@@ -2,9 +2,7 @@
 """Module for authorization"""
 from bcrypt import hashpw, gensalt, checkpw
 from db import DB
-
-
-from db import DB
+import typing
 
 
 class Auth:
