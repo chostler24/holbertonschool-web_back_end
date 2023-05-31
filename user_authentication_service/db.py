@@ -16,7 +16,7 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -35,8 +35,7 @@ class DB:
         """
         user = User(email=email, hashed_password=hashed_password)
         try:
-            existing_user = self._session.query(User).filter_by(
-                email=email).one()
+            existing_user = self._session.query(User).filter_by(email=email).one()
             existing_user.hashed_password = hashed_password
             user = self._session.merge(existing_user)
         except NoResultFound:
