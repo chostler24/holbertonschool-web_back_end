@@ -1,74 +1,50 @@
 #!/usr/bin/env python3
 """Module for class session auth"""
+
 from api.v1.auth.auth import Auth
-import uuid
+from uuid import uuid4
 from models.user import User
 
 
 class SessionAuth(Auth):
-    """Declaration of class SessionAuth"""
+    """ new session authentication class inheriting from Auth """
     user_id_by_session_id = {}
 
     def create_session(self, user_id: str = None) -> str:
-        """
-        Function create_session checks if user_id is str
-        Creates session_id and stores it in dict
-        Returns session_id
-        """
-        if user_id is None or not isinstance(user_id, str):
+        """ creates a session_id for a user """
+        if user_id is None or type(user_id) is not str:
             return None
-
-        session_id = str(uuid.uuid4())
+        session_id = str(uuid4())
         self.user_id_by_session_id[session_id] = user_id
         return session_id
 
     def user_id_for_session_id(self, session_id: str = None) -> str:
-        """Function user_id_for_session_id returns user_id for session_id"""
-        if session_id is None or not isinstance(session_id, str):
+        """ returns a user_id based on a session_id """
+        if session_id is None or type(session_id) is not str:
             return None
-
         return self.user_id_by_session_id.get(session_id)
 
     def current_user(self, request=None):
-        """
-        Retrieve a User instance based on a cookie value.
-
-        Args:
-            request: The request object containing the session cookie.
-
-        Returns:
-            User: The User instance associated with the session cookie,
-            or None if the cookie or user is not found.
-
-        """
-        cookie_value = self.session_cookie(request)
-        if cookie_value:
-            user_id = self.user_id_for_session_id(cookie_value)
+        """ returns a User instance based on a cookie value """
+        sesh = self.session_cookie(request)
+        if sesh:
+            user_id = self.user_id_for_session_id(sesh)
             if user_id:
                 return User.get(user_id)
         return None
 
     def destroy_session(self, request=None):
-        """
-        Deletes the user session/logout.
-
-        Args:
-            request: The request object containing the session cookie.
-
-        Returns:
-            bool: True if the session was successfully destroyed, False otherwise.
-
-        """
-        if request is None:
+        """ deletes the given user session // logs out  """
+        # Check whether request exists
+        if not request:
             return False
-
+        # Check whether the request contains Session ID cookie
         session_id = self.session_cookie(request)
         if not session_id:
             return False
-
+        # Check whether Session ID is linked to a User ID
         user_id = self.user_id_for_session_id(session_id)
         if not user_id:
             return False
-
-        del self.user_id_by_session_id[session_id]
+        self.user_id_by_session_id.pop(session_id)
         return True
