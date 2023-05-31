@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base, User
 
@@ -34,7 +35,8 @@ class DB:
         """
         user = User(email=email, hashed_password=hashed_password)
         try:
-            existing_user = self._session.query(User).filter_by(email=email).one()
+            existing_user = self._session.query(User).filter_by(
+                email=email).one()
             existing_user.hashed_password = hashed_password
             user = self._session.merge(existing_user)
         except NoResultFound:
