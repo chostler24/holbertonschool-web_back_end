@@ -4,6 +4,7 @@ from bcrypt import hashpw, gensalt, checkpw
 from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
+import uuid
 
 
 class Auth:
@@ -33,3 +34,8 @@ class Auth:
 def _hash_password(password: str) -> str:
     """Password slinging hasher"""
     return hashpw(password.encode(), gensalt())
+
+
+def _generate_uuid() -> str:
+    """Generate UUID"""
+    return str(uuid.uuid4())
