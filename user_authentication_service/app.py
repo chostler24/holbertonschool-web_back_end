@@ -60,4 +60,4 @@ def profile():
     if user:
         return jsonify({"email": user.email})
     else:
-        abort(403
+        abort(403)
