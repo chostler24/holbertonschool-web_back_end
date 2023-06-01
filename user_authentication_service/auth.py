@@ -41,7 +41,7 @@ class Auth:
             return None
 
     def get_user_from_session_id(self, session_id: str) -> str:
-        """ Get a user from a session ID """
+        """Get user from sessionID"""
         if session_id is None:
             return None
         try:
@@ -50,7 +50,7 @@ class Auth:
             return None
 
     def destroy_session(self, user_id: int) -> None:
-        """ Destroy a session ID """
+        """Destroy sessionID"""
         try:
             self._db.update_user(user_id, session_id=None)
         except NoResultFound:
