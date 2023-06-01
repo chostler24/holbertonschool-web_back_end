@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def welcome():
-    """ Welcome Method """
+    """Welcome Method"""
     return jsonify({"message": "Bienvenue"})
 
 
