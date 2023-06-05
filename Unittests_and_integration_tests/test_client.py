@@ -2,7 +2,7 @@
 """Module for GitHub Test Client class"""
 import client
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -35,17 +35,22 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @patch('client.get_json')
     def test_public_repos(self, mock_get_json):
-        mock_payload = [{"name": "repo1"}, {"name": "repo2"}]
+        """function tests public repo"""
+        mock_payload = [{"name": "Test"}]
         mock_get_json.return_value = mock_payload
 
-        client = GithubOrgClient("test_org")
-        result = client.public_repos()
-
-        expected_result = ["repo1", "repo2"]
-        self.assertEqual(result, expected_result)
-
-        mock_get_json.assert_called_once_with(
-            "https://api.github.com/repos/test_org/repos")
+        with patch.object(
+            GithubOrgClient,
+            '_public_repos_url',
+            new_callable=PropertyMock
+        ) as mock_public_repos_url:
+            mock_public_repos_url.return_value = "Test"
+            test_class = GithubOrgClient("test")
+            self.assertEqual(
+                test_class.public_repos(),
+                ["Test"]
+            )
+            mock_get_json.assert_called_once()
 
 
 if __name__ == '__main__':
