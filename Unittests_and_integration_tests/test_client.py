@@ -17,7 +17,7 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_org(self, org_name, mock_get_json):
         """function tests that GitHubOrgClient returns correct value"""
         mock_get_json.return_value = {"payload": True}
-        test_class = GithubOrgClient(test_org_name)
+        test_class = GithubOrgClient(org_name)
         self.assertEqual(test_class.org, mock_get_json.return_value)
         mock_get_json.assert_called_once()
 
