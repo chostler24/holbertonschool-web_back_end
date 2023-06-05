@@ -22,7 +22,7 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_get_json.assert_called_once()
 
     @patch('client.get_json')
-    deg test_public_repos_url(self, mock):
+    def test_public_repos_url(self, mock):
         """function tests repo url"""
         test_class = GithubOrgClient("google")
         mock.return_value = {
