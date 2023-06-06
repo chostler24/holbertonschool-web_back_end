@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module for Babel object instantiation"""
-from flask import Flask
+from flask import Flask, render_template
 from flask_babel import Babel
 
 app = Flask(__name__)
