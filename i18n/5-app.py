@@ -4,7 +4,16 @@ from flask_babel import Babel, gettext
 app = Flask(__name__)
 
 
+users = {
+    1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
+    2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
+    3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
+    4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
+}
+
+
 class Config(object):
+    """declaration of class Config"""
     LANGUAGES = ['en', 'fr']
     BABEL_DEFAULT_LOCALE = 'en'
     BABEL_DEFAULT_TIMEZONE = 'UTC'
@@ -14,43 +23,34 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-users = {
-    1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
-    2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
-    3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
-    4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
-}
-
-
-def get_user(user_id):
-    return users.get(user_id)
-
-
-@app.before_request
-def before_request():
-    user_id = request.args.get('login_as')
-    if user_id:
-        g.user = get_user(int(user_id))
-    else:
-        g.user = None
-
-
 @app.route('/')
 def index():
-    if g.user:
-        welcome_message = gettext(
-            'You are logged in as %(username)s.') % {
-                'username': g.user['name']}
-    else:
-        welcome_message = gettext('You are not logged in.')
-    return render_template('4-index.html', welcome_message=welcome_message)
+    """Function renders 5-index"""
+    return render_template('5-index.html')
 
 
 @babel.localeselector
 def get_locale():
-    if g.user and g.user['locale'] in app.config['LANGUAGES']:
-        return g.user['locale']
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    """Function matches best supported language"""
+    if 'locale' in request.args:
+        requested_locale = request.args['locale']
+        if requested_locale in app.config['LANGUAGES']:
+            return requested_locale
+
+
+def get_user():
+    """Function gets user id and returns it"""
+    if 'login_as' in request.args:
+        user_id = request.args['login_as']
+    if user_id:
+        return users.get(int(user_id))
+    return None
+
+
+@app.before_request
+def before_request():
+    """sets user to global on flask.g.user"""
+    g.user = get_user()
 
 
 if __name__ == '__main__':
