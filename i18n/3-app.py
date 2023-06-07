@@ -20,7 +20,10 @@ babel = Babel(app)
 @app.route('/')
 def index():
     """Function renders 1-index"""
-    return render_template('3-index.html')
+    def index():
+    return render_template(
+        'index.html', home_title=gettext(
+            'Welcome to Holberton'), home_header=gettext('Hello, World!'))
 
 
 @babel.localeselector
