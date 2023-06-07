@@ -23,7 +23,7 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-@app.route('/')
+@app.route('/', strict_slashes=False)
 def index():
     """Function renders 5-index"""
     return render_template('5-index.html')
@@ -40,8 +40,7 @@ def get_locale():
 
 def get_user():
     """Function gets user id and returns it"""
-    if 'login_as' in request.args:
-        user_id = request.args['login_as']
+    user_id = request.args.get('login_as')
     if user_id:
         return users.get(int(user_id))
     return None
