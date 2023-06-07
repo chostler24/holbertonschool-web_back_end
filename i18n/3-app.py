@@ -6,7 +6,7 @@ from flask_babel import Babel
 app = Flask(__name__)
 
 
-class Config(object):
+class Config():
     """declaration of class Config"""
     LANGUAGES = ['en', 'fr']
     BABEL_DEFAULT_LOCALE = 'en'
