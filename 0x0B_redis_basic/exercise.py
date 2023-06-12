@@ -29,7 +29,9 @@ class Cache():
         return data
 
     def get_str(self, key: str):
+        """function parameterizes Cache.get with correct conversion"""
         return self.get(key, fn=lambda d: d.decode("utf-8"))
 
     def get_int(self, key: str):
+        """function parameterizes Cache.get with correct conversion"""
         return self.get(key, fn=int)
