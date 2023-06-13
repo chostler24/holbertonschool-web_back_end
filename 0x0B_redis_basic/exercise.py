@@ -34,6 +34,7 @@ def call_history(method: Callable) -> Callable:
 
 
 def replay(cache, func: Callable):
+    """function displays history of calls"""
     func_name = func.__qualname__
     inputs_key = "{}:inputs".format(func_name)
     outputs_key = "{}:outputs".format(func_name)
