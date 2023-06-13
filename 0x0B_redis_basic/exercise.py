@@ -7,12 +7,29 @@ from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
-    """function """
+    """function defines decorator and returns Callable"""
     @wraps(method)
     def wrapper(self, *args, **kwargs):
+        """method for decorator"""
         key = method.__qualname__
         self._redis.incr(key)
         return method(self, *args, **kwargs)
+    return wrapper
+
+
+def call_history(method: Callable) -> Callable:
+    """function defines decorator and returns Callable"""
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """method for decorator"""
+        input_key = "{}:inputs".format(method.__qualname__)
+        output_key = "{}:outputs".format(method.__qualname__)
+
+        self._redis.rpush(input_key, str(args))
+        output = method(self, *args, **kwargs)
+        self._redis.rpush(output_key, output)
+
+        return output
     return wrapper
 
 
@@ -24,6 +41,7 @@ class Cache():
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """function takes data arg and returns a string"""
         key = str(uuid.uuid4())
