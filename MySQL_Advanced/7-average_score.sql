@@ -11,7 +11,7 @@ BEGIN
   DECLARE avg_score FLOAT;
 
   -- Compute the average score
-  SELECT AVG(score) INTO average_score
+  SELECT AVG(score) INTO avg_score
   FROM corrections
   WHERE corrections.user_id = user_id;
 
