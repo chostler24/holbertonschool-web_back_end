@@ -18,7 +18,8 @@ BEGIN
     -- Insert the correction
     INSERT INTO corrections (user_id, project_id, score) VALUES (user_id, project_id, score);
 
-    SELECT "Correction added successfully." AS Message;
-END //
+END;
+
+//
 
 DELIMITER ;
