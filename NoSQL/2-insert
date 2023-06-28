@@ -1,0 +1,12 @@
+// Replace "my_db" with the desired database name
+
+var dbName = "my_db";
+
+if (dbName) {
+  var conn = new Mongo();
+  var db = conn.getDB(dbName);
+
+  db.school.insertOne({ name: "Holberton school" });
+} else {
+  print("No database name provided.");
+}
