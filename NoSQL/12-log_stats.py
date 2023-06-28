@@ -8,17 +8,17 @@ from pymongo import MongoClient
 
 def get_logs_stats():
     """get_logs_stats function"""
-    client = MongoClient('mongodb://localhost:27017')
+    client = MongoClient()
     db = client.logs
     collection = db.nginx
 
     total_logs = collection.count_documents({})
-    print(f"{total_logs} logs where {total_logs} is the number of documents in this collection")
+    print("{} logs".format(total_logs))
 
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     for method in methods:
         count = collection.count_documents({"method": method})
-        print(f"\t{count} logs with method = {method}")
+        print(f"\tmethod {method}: " + f"{count}")
 
     status_count = collection.count_documents({"method": "GET", "path": "/status"})
     print(f"{status_count} logs with method=GET and path=/status")
