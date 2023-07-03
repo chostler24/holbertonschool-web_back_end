@@ -1,12 +1,39 @@
 // 2-read_file.js module
 
-const db = require('./database.csv');
+const fs = require('fs');
 
-module.exports = function countStudents(path) {
-    if (!db) {
-        throw error('Cannot load the databse')
-    } else {
-        process.stdin.read(db);
-        console.log('Number of students: ${}');
+function countStudents(path) {
+  try {
+    const data = fs.readFileSync(path, 'utf8');
+    const lines = data.split('\n').filter(line => line.trim() !== ''); // Remove empty lines
+
+    // Calculate the number of students in each field
+    const fields = {};
+    let totalStudents = 0;
+
+    for (const line of lines) {
+      const [firstName, lastName, field] = line.split(',');
+
+      if (field) {
+        totalStudents++;
+
+        if (fields[field]) {
+          fields[field].push(firstName);
+        } else {
+          fields[field] = [firstName];
+        }
+      }
     }
+
+    // Log the results
+    console.log(`Number of students: ${totalStudents}`);
+
+    for (const field in fields) {
+      const studentsInField = fields[field].length;
+      const studentList = fields[field].join(', ');
+      console.log(`Number of students in ${field}: ${studentsInField}. List: ${studentList}`);
+    }
+  } catch (error) {
+    throw new Error('Cannot load the database');
+  }
 }
