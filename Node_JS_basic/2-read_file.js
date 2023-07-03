@@ -2,9 +2,9 @@
 
 const fs = require('fs');
 
-const countStudents = (file) => {
+const countStudents = (path) => {
   try {
-    const file = fs.readFileSync(path, 'utf8');
+    const data = fs.readFileSync(path, 'utf8');
     const lines = data.split('\n').filter((line) => line.trim() !== ''); // Remove empty lines
 
     // Calculate the number of students in each field
@@ -36,6 +36,6 @@ const countStudents = (file) => {
   } catch (error) {
     throw new Error('Cannot load the database');
   }
-}
+};
 
 module.exports = countStudents;
