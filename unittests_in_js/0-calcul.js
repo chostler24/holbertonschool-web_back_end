@@ -1,9 +1,7 @@
 // 0-calcul.js module
 
 const calculateNumber = (a, b) => {
-    let aRound = Math.round(a);
-    let bRound = Math.round(b);
-    return aRound + bRound;
+    return Math.round(a) + Math.round(b);
 }
 
 module.exports = calculateNumber;
