@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const sinon = require('sinon');
-const getPaymentTokenFromAPI = require('./getPaymentTokenFromAPI');
+const getPaymentTokenFromAPI = require('./6-payment_token.js');
 
 describe('getPaymentTokenFromAPI', () => {
   it('should return a resolved promise with data when success is true', async () => {
