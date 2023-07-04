@@ -1,8 +1,8 @@
 // 0-calcul.js module
 
 const calculateNumber = (a, b) => {
-    const aRound = Math.round(a);
-    const bRound = Math.round(b);
+    let aRound = Math.round(a);
+    let bRound = Math.round(b);
     return aRound + bRound;
 }
 
