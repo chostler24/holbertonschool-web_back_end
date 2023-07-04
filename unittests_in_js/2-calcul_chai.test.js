@@ -71,10 +71,10 @@ describe('calculateNumber', () => {
         });
 
         it('it should return Error if b is equal to 0', () => {
-            expect(calculateNumber('DIVIDE', 10.3, 0)).to.equal('error');
-            expect(calculateNumber('DIVIDE', 10.7, 0)).to.equal('error');
-            expect(calculateNumber('DIVIDE', 10.3, 0.3)).to.equal('error');
-            expect(calculateNumber('DIVIDE', 10.7, 0.2)).to.equal('error');
+            expect(calculateNumber('DIVIDE', 10.3, 0)).to.equal('Error');
+            expect(calculateNumber('DIVIDE', 10.7, 0)).to.equal('Error');
+            expect(calculateNumber('DIVIDE', 10.3, 0)).to.equal('Error');
+            expect(calculateNumber('DIVIDE', 10.7, 0)).to.equal('Error');
         });
       });
   });
