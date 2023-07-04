@@ -1,7 +1,7 @@
 // unittesting suite for 1-calcul.js module
 
 const assert = require("assert");
-const calculateNumber = require("./0-calcul.js");
+const calculateNumber = require("./1-calcul.js");
 
 describe('calculateNumber', () => {
     describe('when type is SUM', () => {
