@@ -1,9 +1,11 @@
-// 1-redis_client.js module
+// 2-redis_client.js module
 
 import redis from 'redis';
+import { promisify } from 'util';
 
 // Configure Redis connection
 const redisClient = redis.createClient();
+const getAsync = promisify(redisClient.get).bind(redisClient);
 
 // Listen for connection event
 redisClient.on('connect', () => {
@@ -19,15 +21,14 @@ const setNewSchool = (schoolName, value) => {
   redisClient.set(schoolName, value, redis.print);
 }
 
-const displaySchoolValue = (schoolName) => {
-  redisClient.get(schoolName, (err, reply) => {
-    if (err) {
-      console.error('Error retrieving value from Redis:', err);
-    } else {
-      console.log(`Value for key '${schoolName}': ${reply}`);
+async function displaySchoolValue(schoolName) {
+    try {
+      const value = await getAsync(schoolName);
+      console.log(`Value for key '${schoolName}': ${value}`);
+    } catch (error) {
+      console.error('Error retrieving value from Redis:', error);
     }
-  });
-}
+  }
 
 displaySchoolValue('Holberton');
 setNewSchool('HolbertonSanFrancisco', '100');
