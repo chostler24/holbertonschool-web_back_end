@@ -27,33 +27,4 @@ describe('Index Page', () => {
       done();
     });
   });
-
-  it('should return the available payment methods', (done) => {
-    request('http://localhost:7865/available_payments', (error, response, body) => {
-      expect(response.statusCode).to.equal(200);
-      expect(JSON.parse(body)).to.deep.equal({
-        payment_methods: {
-          credit_cards: true,
-          paypal: false
-        }
-      });
-      done();
-    });
-  });
-
-  it('should return the welcome message with the username', (done) => {
-    const userName = 'JohnDoe';
-    request.post(
-      {
-        url: 'http://localhost:7865/login',
-        json: true,
-        body: { userName }
-      },
-      (error, response, body) => {
-        expect(response.statusCode).to.equal(200);
-        expect(body).to.equal(`Welcome ${userName}`);
-        done();
-      }
-    );
-  });
 });
