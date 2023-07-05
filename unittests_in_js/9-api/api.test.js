@@ -17,6 +17,7 @@ describe('Index Page', () => {
     request('http://localhost:7865/cart/12', (error, response, res) => {
       expect(response.statusCode).to.equal(200);
       expect(res).to.equal('Payment methods for cart 12');
+      done();
     });
   });
 
