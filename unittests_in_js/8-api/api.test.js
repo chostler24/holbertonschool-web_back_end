@@ -1,14 +1,28 @@
 // testing suite for api.js module
 
-const { expect } = require('chai');
-const request = require('request');
+const chai = require('chai');
+const expect = chai.expect;
 
-describe('API testing', () => {
-  it('Tests the GET / route', (done) => {
-    request('http://localhost:7865', (error, response, body) => {
-      expect(response.statusCode).to.equal(200);
-      expect(body).to.equal('Welcome to the payment system');
-      done();
-    });
+const app = require('./api');
+
+describe('Index Page', () => {
+  it('should return a 200 status code', (done) => {
+    chai
+      .request(app)
+      .get('/')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+
+  it('should return the correct result', (done) => {
+    chai
+      .request(app)
+      .get('/')
+      .end((err, res) => {
+        expect(res.text).to.equal('Welcome to the payment system');
+        done();
+      });
   });
 });
